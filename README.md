@@ -16,6 +16,31 @@ tablero en Streamlit, pruebas e integración continua.
 | [Estándares](docs/estandares.md) | Reglas de código, pruebas, seguridad y Git |
 | [Plan de trabajo](docs/plan.md) | Versiones, tareas y riesgos |
 
+## Desarrollo
+
+Requiere Python 3.11 o superior.
+
+```bash
+python -m venv .venv
+# Windows (PowerShell): .venv\Scripts\Activate.ps1
+# Linux / macOS:        source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -e ".[dev]"
+pre-commit install
+```
+
+| Tarea | Comando |
+| --- | --- |
+| Pruebas con cobertura | `pytest` |
+| Lint | `ruff check .` |
+| Formato | `ruff format .` |
+| Tipos | `mypy` |
+| Todas las revisiones de pre-commit | `pre-commit run --all-files` |
+| Auditoría de dependencias | `pip-audit --skip-editable` |
+
+La configuración se lee de variables de entorno con el prefijo `CRS_`; los valores disponibles están
+en [`.env.example`](.env.example).
+
 ## Datos
 
 Se usa el dataset [Default of Credit Card Clients](https://doi.org/10.24432/C55S3H) de UCI Machine

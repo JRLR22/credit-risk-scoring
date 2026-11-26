@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  calidad:
+    name: Lint, tipos y pruebas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip setuptools
+          pip install -e ".[dev]"
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Formato
+        run: ruff format --check .
+
+      - name: Tipos
+        run: mypy
+
+      - name: Pruebas
+        run: pytest
+
+  seguridad:
+    name: Seguridad
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Auditar dependencias
+        run: |
+          python -m pip install --upgrade pip setuptools
+          pip install -e ".[dev]"
+          pip-audit --skip-editable
+
+      - name: Buscar secretos
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

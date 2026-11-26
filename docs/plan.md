@@ -17,7 +17,7 @@ los pull requests cierran los issues que resuelven.
 - Configurar el paquete con `pyproject.toml` y dependencias fijadas.
 - Configurar Ruff, mypy y pytest con cobertura.
 - Configurar pre-commit con Ruff y gitleaks.
-- Agregar Makefile con las tareas comunes (`install`, `lint`, `test`, `train`, `serve`).
+- Documentar en el README los comandos de instalación, pruebas y revisión.
 - Crear la CI en GitHub Actions: lint, tipos, pruebas y auditoría de dependencias.
 - Agregar módulo de configuración y logging.
 
