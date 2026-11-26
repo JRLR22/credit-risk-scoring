@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "credit-risk-scoring"
+version = "0.1.0"
+description = "Modelo de riesgo crediticio con explicabilidad, API y tablero."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Raúl López" }]
+requires-python = ">=3.11"
+# Las dependencias de cada etapa se agregan cuando se necesitan.
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "mypy==2.4.1",
+  "pip-audit==2.10.1",
+  "pre-commit==4.7.0",
+  "pytest==9.2.0",
+  "pytest-cov==7.1.0",
+  "ruff==0.17.6",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E", "W",  # pycodestyle
+  "F",       # pyflakes
+  "I",       # orden de imports
+  "B",       # errores comunes (bugbear)
+  "UP",      # sintaxis moderna de Python
+  "SIM",     # simplificaciones
+  "N",       # convenciones de nombres
+  "S",       # seguridad (bandit)
+  "PTH",     # pathlib en lugar de os.path
+  "RUF",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# assert es la forma normal de verificar en pytest
+"tests/**" = ["S101"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --cov=credit_risk --cov-report=term-missing --cov-fail-under=80"
+
+[tool.coverage.run]
+branch = true
+source = ["credit_risk"]
